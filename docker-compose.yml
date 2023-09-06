@@ -1,0 +1,45 @@
+version: "3"
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-lab
+    volumes:
+      - ./index:/var/www/html
+    networks:
+      - my-network
+
+  db:
+    image: mariadb:10.7
+    container_name: mariadb-lab
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3308:3306"
+    networks:
+      - my-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-lab
+    volumes:
+      - ./conf:/etc/nginx/conf.d
+      - ./index:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    networks:
+      - my-network
+
+
+volumes:
+  my-data:
+
+networks:
+  my-network:
