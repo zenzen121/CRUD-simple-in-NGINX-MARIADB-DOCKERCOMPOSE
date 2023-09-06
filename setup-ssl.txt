@@ -1,0 +1,9 @@
+docker exec -it nginx-lab bash
+apt-get update
+apt-get install certbot python3-certbot-nginx
+certbot --nginx -d yourdomain.com
+nginx -t
+service nginx restart
+
+/* open your folder where you pushed docker-compose.yml */ 
+docker-compose up -d
